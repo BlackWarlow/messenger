@@ -16,6 +16,9 @@ admin.site.index_title = 'Модерация сайта'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.index_page.as_view(), name='index_page'),
+    path('login/', views.login_page.as_view(), name='login_page'),
+    path('logout/', views.logout_page.as_view(), name='logout_page'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

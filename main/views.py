@@ -4,6 +4,7 @@ from main.forms import *
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 # Create your views here.
+
 class index_page(View):
     def get(self, request):
         context = {'user': request.user}

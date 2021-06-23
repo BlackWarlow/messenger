@@ -19,6 +19,9 @@ urlpatterns = [
     path('', views.index_page.as_view(), name='index_page'),
     path('login/', views.login_page.as_view(), name='login_page'),
     path('logout/', views.logout_page.as_view(), name='logout_page'),
+    path('register/', views.register_page.as_view(), name='register_page'),
+    path('profile/', views.profile_page.as_view(), name='my_profile_page'),
+    path('profile/<str:username>/', views.profile_page.as_view()),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -14,4 +14,12 @@
    <h3>Профиль пользователя отсутсвует</h3>
 {% endif %}
 
+<hr>
+
+<form action='' method='POST'>
+<h4>Поиск профилей</h4>
+{% csrf_token %}
+{{ form.as_p }}
+<button type='submit'>{{ form.submit_btn_text }}</button>
+</form>
 {% endblock content %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h1>Поиск профилей</h1>
+
+<form action='' method='POST'>
+{% csrf_token %}
+{{ form.as_p }}
+<button type='submit'>{{ form.submit_btn_text }}</button>
+</form>
+
+<hr>
+
+<h3>Результаты поиска</h3>
+<ul>
+{% for u in result %}
+<li><a href="/profile/{{ u.username }}/">{{ u.username }} - {{ u.first_name }} {{ u.last_name }}</a></li>
+{% endfor %}
+</ul>
+
+{% endblock content %}

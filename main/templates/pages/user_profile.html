@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h1>{{ p_user.username }}</h1>
+<h2>{{ p_user.first_name }} {{ p_user.last_name }}</h2>
+<h3>{{ p_user.email }}</h3>
+
+{% if profile != None %}
+   <h3>{{ profile.status }}</h3>
+   <h3>{{ profile.birth }}</h3>
+{% else %}
+   <h3>Профиль пользователя отсутсвует</h3>
+{% endif %}
+
+{% if user.is_authenticated %}
+    {% if dialog is not None %}
+      <h4><a href="/dialog/{{ dialog.link }}/">Открыть диалог</a></h4>
+    {% else %}
+      <h4><a href="/new/dialog/{{ p_user.username }}/">Начать общение</a></h4>
+    {% endif %}
+  {% else %}
+    <h4>Чтобы общаться на сайте, необходимо войти в профиль!</h4>
+  {% endif %}
+{% endblock content %}

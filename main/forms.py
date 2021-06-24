@@ -121,4 +121,32 @@ class RegisterForm(forms.Form):
         return False
 
 
+class SearchProfileForm(forms.Form):
+    submit_btn_text = 'Искать'
 
+    search_str = forms.CharField(
+        label='Строка поиска',
+        required=True,
+        min_length=3,
+    )
+
+    def search(self, request):
+        if not self.is_valid():
+            return []
+
+        s_str = self.cleaned_data['search_str']
+        result = []
+        for s in s_str.split():
+            for u in list(User.objects.filter(username__unaccent__icontains=s)):
+                if u not in result:
+                    result.append(u)
+
+            for u in list(User.objects.filter(first_name__unaccent__icontains=s)):
+                if u not in result:
+                    result.append(u)
+
+            for u in list(User.objects.filter(last_name__unaccent__icontains=s)):
+                if u not in result:
+                    result.append(u)
+
+        return result

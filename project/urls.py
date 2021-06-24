@@ -22,6 +22,8 @@ urlpatterns = [
     path('register/', views.register_page.as_view(), name='register_page'),
     path('profile/', views.profile_page.as_view(), name='my_profile_page'),
     path('profile/<str:username>/', views.profile_page.as_view()),
+    path('profile/search/<str:search_str>/', views.profile_search.as_view()),
+    path('profile/search/', views.profile_search.as_view()),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

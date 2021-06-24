@@ -57,10 +57,12 @@ class register_page(View):
 class profile_page(View):
     def get(self, request, username=None):
         if username == None or username == request.user.username:
-            form = SearchProfileForm()
-            profile = Profile.objects.filter(user=request.user).first()
-            context = {'user': request.user, 'profile': profile, 'form': form}
-            return render(request, 'pages/profile.html', context)
+            if request.user.is_authenticated:
+                form = SearchProfileForm()
+                profile = Profile.objects.filter(user=request.user).first()
+                context = {'user': request.user, 'profile': profile, 'form': form}
+                return render(request, 'pages/profile.html', context)
+            return redirect('index_page')
         else:
             context = {'page_title': 'Профиль'}
 

@@ -113,3 +113,26 @@ class profile_search(View):
         result = form.search(request)
         context = {'form': form, 'result': result}
         return render(request, 'pages/search_profile.html', context)
+
+
+class all_dialogs(View):
+    def get(self, request):
+        context = dict()
+        if request.user.is_authenticated:
+            p = Profile.objects.filter(user=request.user).first()
+            if p != None:
+                dialogs = []
+
+                for d in list(Dialog.objects.filter(sender=p)):
+                    dialogs.append(d)
+                for d in list(Dialog.objects.filter(reciever=p)):
+                    dialogs.append(d)
+
+                context.update({'profile': p, 'dialogs': dialogs})
+
+            return render(request, 'pages/my_dialogs.html', context)
+        else:
+            return redirect('index_page')
+
+class create_dialog(View):
+  pass

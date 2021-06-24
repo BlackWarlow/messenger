@@ -24,6 +24,9 @@ urlpatterns = [
     path('profile/<str:username>/', views.profile_page.as_view()),
     path('search/profile/<str:search_str>/', views.profile_search.as_view()),
     path('search/profile/', views.profile_search.as_view(), name='profile_search_page'),
+    path('dialogs/', views.all_dialogs.as_view(), name='my_dialogs'),
+    path('new/dialog/<str:username>', views.create_dialog.as_view()),
+    path('new/dialog/', views.create_dialog.as_view()),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

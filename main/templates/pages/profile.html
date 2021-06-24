@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<title>{{ user.username }} profile</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
 
 <h1>{{ user.username }}</h1>
 <h2>{{ user.first_name }} {{ user.last_name }}</h2>
@@ -16,5 +14,4 @@
    <h3>Профиль пользователя отсутсвует</h3>
 {% endif %}
 
-</body>
-</html>
+{% endblock content %}

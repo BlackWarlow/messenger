@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Main page</title>
-</head>
-<body>
-{{ user }}
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<h1>Вы зашли в систему как: {{ user.username }}</h1>
+{% else %}
+<h1>Вход в систему не выполнен.</h1>
+{% endif %}
+
+{% endblock content %}

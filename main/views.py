@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from django.contrib.auth import logout
 # Create your views here.
 
+
 class index_page(View):
     def get(self, request):
         context = {'user': request.user}
@@ -36,6 +37,7 @@ class logout_page(View):
         logout(request)
         return redirect('index_page')
 
+
 class register_page(View):
     def get(self, request):
         if request.user.is_authenticated:
@@ -51,6 +53,7 @@ class register_page(View):
             context = {'form': form}
             return render(request, 'pages/register.html', context)
 
+
 class profile_page(View):
     def get(self, request, username=None):
         if username == None or username == request.user.username:
@@ -58,6 +61,6 @@ class profile_page(View):
             context = {'user': request.user, 'profile': profile}
             return render(request, 'pages/profile.html', context)
         else:
-            return redirect('index')
+            return redirect('index_page')
     def post(self,request,username=None):
         pass

@@ -11,7 +11,7 @@ from main import views
 
 # Renaming django admin title
 admin.site.site_header = 'Панель администрации'
-admin.site.site_title = 'Project'
+admin.site.site_title = 'Messenger'
 admin.site.index_title = 'Модерация сайта'
 
 urlpatterns = [

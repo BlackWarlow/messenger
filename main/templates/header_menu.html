@@ -1,0 +1,17 @@
+<header>
+<nav>
+	<ul>
+		<li><a href="{% url 'index_page' %}">Главная страница</a></li>
+		{% if user.is_authenticated %}
+		<li><a href="{% url 'my_profile_page' %}">Мой профиль</a></li>
+		{% if user.is_staff %}
+		<li><a href="/admin/">Админка</a></li>
+		{% endif %}
+		<li><a href="{% url 'logout_page' %}">Выйти</a></li>
+		{% else %}
+		<li><a href="{% url 'login_page' %}">Войти в аккаунт</a></li>
+		<li><a href="{% url 'register_page' %}">Зврегестрироваться</a></li>
+		{% endif %}
+	</ul>
+</nav>
+</header>

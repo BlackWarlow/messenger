@@ -9,10 +9,14 @@
   {% if dialogs %}
   <ul>
   {% for d in dialogs %}
-    {% if profile == d.sender %}
-      <li><a href="/dialog/{{ d.link }}/">{{ d.reciever.user.username }} - {{ d.reciever.user.first_name }} {{ d.reciever.user.last_name }}</a></li>
+    {% if d.name == '' %}
+      {% if profile == d.sender %}
+        <li><a href="{% url 'dialog' d.link %}">{{ d.reciever.user.username }} - {{ d.reciever.user.first_name }} {{ d.reciever.user.last_name }}</a></li>
+      {% else %}
+        <li><a href="{% url 'dialog' d.link %}">{{ d.sender.user.username }} - {{ d.sender.user.first_name }} {{ d.sender.user.last_name }}</a></li>
+      {% endif %}
     {% else %}
-      <li><a href="/dialog/{{ d.link }}/">{{ d.sender.user.username }} - {{ d.sender.user.first_name }} {{ d.sender.user.last_name }}</a></li>
+      <li><a href="{% url 'dialog' d.link %}">{{ d.name }}</a></li>
     {% endif %}
   {% endfor %}
   </ul>

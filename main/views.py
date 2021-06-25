@@ -3,6 +3,7 @@ from django.views import View
 from main.forms import *
 from django.shortcuts import redirect
 from django.contrib.auth import logout
+from django.urls import reverse
 # Create your views here.
 
 
@@ -140,4 +141,77 @@ class all_dialogs(View):
             return redirect('index_page')
 
 class create_dialog(View):
-  pass
+    def get(self,request,username=None):
+        if username == None:
+            return redirect('index_page')
+
+        u = User.objects.filter(username=username).first()
+        if u == None:
+            return redirect('index_page')
+
+        if request.user.is_authenticated:
+            p = Profile.objects.filter(user=request.user).first()
+
+            p_u = Profile.objects.filter(user=u).first()
+            if p != None and p_u != None:
+            # Код программы
+
+                d1 = Dialog.objects.filter(sender=p, reciever=p_u).first()
+                d2 = Dialog.objects.filter(reciever=p_u, sender=p).first()
+                if d1 == None and d2 == None:
+                    form = NewDialogForm()
+                    context = {'form': form, 'user_profile': p_u}
+                    return render(request, 'pages/new_dialog.html', context)
+                else:
+                    return redirect('my_dialogs')
+            else:
+                return redirect('my_profile_page')
+        else:
+            return redirect('login_page')
+
+    def post(self, request, username=None):
+        if username == None:
+            return redirect('index_page')
+
+        u = User.objects.filter(username=username).first()
+        if u == None:
+            return redirect('index_page')
+
+        if request.user.is_authenticated:
+            p = Profile.objects.filter(user=request.user).first()
+
+            p_u = Profile.objects.filter(user=u).first()
+            if p != None and p_u != None:
+                # Код программы
+
+                d1 = Dialog.objects.filter(sender=p, reciever=p_u).first()
+                d2 = Dialog.objects.filter(reciever=p_u, sender=p).first()
+                if d1 == None and d2 == None:
+                    form = NewDialogForm(request.POST)
+                    result, d = form.save(request, p, p_u)
+                    if result:
+                        return redirect(reverse('dialog', args=[d.link]))
+                    context = {'form': form, 'user_profile': p_u}
+                    return render(request, 'pages/new_dialog.html', context)
+                else:
+                    return redirect('my_dialogs')
+            else:
+                return redirect('my_profile_page')
+        else:
+            return redirect('login_page')
+
+class dialog_page(View):
+    def get(self,request,link = None):
+        if not request.user.is_authenticated:
+            return redirect('login_page')
+
+        if link == None:
+            return redirect('my_dialogs')
+
+        d = Dialog.objects.filter(link=link).first()
+        if d == None:
+            return redirect('my_dialogs')
+
+        context = {'d': d}
+        return render(request, 'pages/dialog.html', context)
+

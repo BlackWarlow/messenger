@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from hashlib import sha256
 
 from datetime import datetime
 
@@ -150,3 +151,26 @@ class SearchProfileForm(forms.Form):
                     result.append(u)
 
         return result
+
+class NewDialogForm(forms.Form):
+    submit_btn_text = 'Создать'
+
+    name = forms.CharField(
+        max_length = 50,
+        label = 'Название диалога',
+    )
+
+    def save(self, request, p1, p2):
+        if not self.is_valid():
+            return False, None
+        name_clean = self.cleaned_data['name']
+        link = str(datetime.now()) + p1.user.username + p2.user.username
+
+        d = Dialog(
+            name=name_clean,
+            sender=p1,
+            reciever=p2,
+            link = sha256(link.encode('UTF-8')).hexdigest()[0:14],
+        )
+        d.save()
+        return True, d

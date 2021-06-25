@@ -25,8 +25,10 @@ urlpatterns = [
     path('search/profile/<str:search_str>/', views.profile_search.as_view(), name='user_profile_search'),
     path('search/profile/', views.profile_search.as_view(), name='profile_search_page'),
     path('dialogs/', views.all_dialogs.as_view(), name='my_dialogs'),
-    path('new/dialog/<str:username>', views.create_dialog.as_view()),
-    path('new/dialog/', views.create_dialog.as_view()),
+    path('new/dialog/<str:username>/', views.create_dialog.as_view(), name='create_dialog_page'),
+    path('new/dialog/', views.create_dialog.as_view(),name='create_dialog_page'),
+    path('dialog/<str:link>/', views.dialog_page.as_view(), name='dialog'),
+    path('dialog/', views.dialog_page.as_view(), name='dialog_error'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

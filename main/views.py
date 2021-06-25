@@ -105,7 +105,12 @@ class profile_page(View):
 
 class profile_search(View):
     def get(self, request, search_str=None):
-        context = {'form': SearchProfileForm()}
+        if search_str != None:
+           form = SearchProfileForm(initial={'search_str': search_str})
+        else:
+           form = SearchProfileForm()
+           
+        context = {'form': form}
         return render(request, 'pages/search_profile.html', context)
 
     def post(self, request, search_str=None):

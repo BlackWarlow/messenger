@@ -79,9 +79,15 @@ ADMIN_REORDER = (
     {'app': 'auth', 'label': 'Авторизация',
         'models': ('auth.User', 'auth.Group', )
     },
+    {'app': 'main', 'label': 'Профили пользователей',
+        'models': ('auth.User', 'main.Profile', )
+    },
+    {'app': 'main', 'label': 'Контент сайта',
+        'models': ('main.Profile', 'main.Dialog', 'main.Message', )
+    },
 )
 
-ADMIN_COLORS_BASE_THEME = 'Default'
+ADMIN_COLORS_BASE_THEME = 'Gray'
 ADMIN_COLORS = [
     ('Default', []),
     ('Lite', 'admincolors/css/lite.css'),

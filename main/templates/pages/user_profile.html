@@ -15,10 +15,10 @@
 {% endif %}
 
 {% if user.is_authenticated %}
-    {% if dialog is not None %}
-      <h4><a href="/dialog/{{ dialog.link }}/">Открыть диалог</a></h4>
+    {% if dialog %}
+      <h4><a href="{% url 'dialog' dialog.link %}">Открыть диалог</a></h4>
     {% else %}
-      <h4><a href="/new/dialog/{{ p_user.username }}/">Начать общение</a></h4>
+      <h4><a href="{% url 'create_dialog_page' p_user.username %}">Начать общение</a></h4>
     {% endif %}
   {% else %}
     <h4>Чтобы общаться на сайте, необходимо войти в профиль!</h4>

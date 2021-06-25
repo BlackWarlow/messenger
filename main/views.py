@@ -88,8 +88,8 @@ class profile_page(View):
                         elif d2 != None:
                             d = d2
 
-                            if d != None:
-                                context['dialog'] = d
+                        if d != None:
+                             context['dialog'] = d
 
                 return render(request, 'pages/user_profile.html', context)
             else:
@@ -154,16 +154,19 @@ class create_dialog(View):
 
             p_u = Profile.objects.filter(user=u).first()
             if p != None and p_u != None:
-            # Код программы
 
-                d1 = Dialog.objects.filter(sender=p, reciever=p_u).first()
+                d1 = Dialog.objects.filter(reciever=p, sender=p_u).first()
                 d2 = Dialog.objects.filter(reciever=p_u, sender=p).first()
+                
                 if d1 == None and d2 == None:
                     form = NewDialogForm()
                     context = {'form': form, 'user_profile': p_u}
                     return render(request, 'pages/new_dialog.html', context)
                 else:
-                    return redirect('my_dialogs')
+                    if d1 != None:
+                        return redirect(reverse('dialog', args=[d1.link]))
+                    else:
+                        return redirect(reverse('dialog', args=[d2.link]))
             else:
                 return redirect('my_profile_page')
         else:
@@ -184,7 +187,7 @@ class create_dialog(View):
             if p != None and p_u != None:
                 # Код программы
 
-                d1 = Dialog.objects.filter(sender=p, reciever=p_u).first()
+                d1 = Dialog.objects.filter(sender=p_u, reciever=p).first()
                 d2 = Dialog.objects.filter(reciever=p_u, sender=p).first()
                 if d1 == None and d2 == None:
                     form = NewDialogForm(request.POST)

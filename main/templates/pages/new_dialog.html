@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h1>Начать общение с {{ user_profile.get_info }}</h1>
+<form action='' method='POST'>
+{% csrf_token %}
+{{ form.as_p }}
+<button type='submit'>{{ form.submit_btn_text }}</button>
+</form>
+
+
+{% endblock content %}

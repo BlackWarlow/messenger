@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+{% if d.sender == request.user %}
+  <h1><a href="{% url 'user_profile' d.reciever.user.username %}">{% if d.name == '' %}{{ d.reciever.get_info }}{% else %}{{ d.name }}{% endif %}</a></h1>
+{% else %}
+  <h1><a href="{% url 'user_profile' d.sender.user.username %}">{% if d.name == '' %}{{ d.sender.get_info }}{% else %}{{ d.name }}{% endif %}</a></h1>
+{% endif %}
+<hr>
+
+{% if m %}
+{% else %}
+  <h3>{{ d.created }} - Это начало великой переписки.</h3>
+{% endif %}
+
+{% endblock content %}

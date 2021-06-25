@@ -30,10 +30,15 @@ class Profile(models.Model):
 
   def __str__(self):
     return '{} - {}'.format(self.user.id, self.user.username)
+  
+  def get_info(self):
+    return '{} - {} {}'.format(self.user.username, self.user.first_name, self.user.last_name)
 
   class Meta:
     verbose_name = 'Профиль'
     verbose_name_plural = 'Профили'
+
+
 
 class Dialog(models.Model):
   sender = models.ForeignKey(
@@ -79,10 +84,13 @@ class Dialog(models.Model):
   )
 
   def __str__(self):
-    return '{} - {} - {}'.format(self.id, self.sender.user.username, self.receiver.user.username)
+    return '{}) {} <-> {} / {}'.format(self.id, self.sender.user.username, self.reciever.user.username, self.link)
+    
+
   class Meta:
     verbose_name = 'Диалог'
     verbose_name_plural = 'Диалоги'
+
 
 class Message(models.Model):
   dialog = models.ForeignKey(
@@ -126,7 +134,7 @@ class Message(models.Model):
   ) # Отправитель -> to Profile
 
   def __str__(self):
-    return '{} - {} - {}'.format(self.id, self.sender.user.username, self.msg_hash)
+    return '{}) -> {} / {}'.format(self.id, self.sender.user.username, self.msg_hash)
 
   class Meta:
     verbose_name = 'Беседа'

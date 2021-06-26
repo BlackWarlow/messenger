@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block js %}
+<script src="{% static '/js/pages/register.js' %}"></script>
+{% endblock js %}
+
 {% block content %}
 
 <form action='' method='POST'>

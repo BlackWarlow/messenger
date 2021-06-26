@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block js %}
+<script scr="{% static 'js/pages/dialog.js' %}"></script>
+{% endblock js %}
+
 {% block content %}
 
 {% if d.sender.user == user %}
@@ -10,8 +15,24 @@
 <hr>
 
 {% if m %}
+  <ul id='all_messages'>
+  {% for msg in m %}
+    <li><b>{{ msg.content }}</b><br><i>{{ msg.sent }}</i> - {{ msg.sender }}, {{ msg.msg_hash }}, {{ msg.is_read }}</li>
+  {% endfor %}
+  </ul>
 {% else %}
   <h3>{{ d.created }} - Это начало великой переписки.</h3>
 {% endif %}
+
+<hr>
+<br>
+<br>
+<form action='' method='POST'>
+{% csrf_token %}
+<label for='id_content'>Текст сообщения:</label><br>
+  <input type='hidden' name='link' id='id_link' value='{{ d.link }}'/>
+<input type='text' name='content' id='id_content' required=''/>
+<button type='submit'>Отправить</button>
+</form>
 
 {% endblock content %}

@@ -29,6 +29,8 @@ urlpatterns = [
     path('new/dialog/', views.create_dialog.as_view(),name='create_dialog_page'),
     path('dialog/<str:link>/', views.dialog_page.as_view(), name='dialog'),
     path('dialog/', views.dialog_page.as_view(), name='dialog_error'),
+    path('check/username/', views.check_username, name='check_username_ajax'),
+    path('message/', views.create_message, name='create_massage_ajax'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

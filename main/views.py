@@ -4,6 +4,7 @@ from main.forms import *
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 from django.urls import reverse
+from django.http import JsonResponse
 # Create your views here.
 
 
@@ -214,7 +215,83 @@ class dialog_page(View):
         d = Dialog.objects.filter(link=link).first()
         if d == None:
             return redirect('my_dialogs')
-
-        context = {'d': d}
+        m = Message.objects.filter(dialog=d)
+        context = {'d': d, 'm': m}
         return render(request, 'pages/dialog.html', context)
+
+
+def check_username(request):
+    username = request.GET.get('username', None)
+    context = dict()
+    if username != None:
+        if username != '':
+            # Тут проверка на наличие пользователя в БД
+            u = User.objects.filter(username=username).first()
+            if u == None:
+                context['status'] = 'ok'
+                context['msg'] = 'Имя пользователя свободно'
+            else:
+                context['status'] = 'error'
+                context['msg'] = 'Имя пользователя занято'
+        else:
+            context['status'] = 'error'
+            context['msg'] = "Параметр 'username' не может быть пустым"
+    else:
+        context['status'] = 'error'
+        context['msg'] = "Нет необходимого параметра 'username'!"
+
+    return JsonResponse(context)
+
+
+def create_message(request):
+    user = request.user
+    context = dict()
+
+    if user.is_authenticated:
+        profile = Profile.objects.filter(user=user).first()
+
+        if profile != None:
+            dialog = Dialog.objects.filter(link=request.POST.get('link', '')).first()
+
+            if dialog != None:
+                if (dialog.sender == profile) or (dialog.reciever == profile):
+                    content = request.POST.get('content', '')
+
+                    if content != '':
+                        hash_str = str(datetime.now()) + profile.user.username + dialog.link
+
+                        m = Message(
+                            dialog=dialog,
+                            content=content,
+                            sender=profile,
+                            msg_hash=sha256(hash_str.encode('UTF-8')).hexdigest()[0:19],
+                        )
+
+                        m.save()
+
+                        context['status'] = 'ok'
+                        context['msg'] = {
+                            'content': content,
+                            'sender': profile.get_info(),
+                            'sent': m.sent,
+                            'msg_hash': m.msg_hash,
+                            'is_read': m.is_read,
+                        }
+                    else:
+                        context['status'] = 'error'
+                        context['msg'] = 'Нельзя отправить сообщение с пустым текстом!'
+                else:
+                    context['status'] = '403'
+                    context['msg'] = 'Недостаточно прав на отправление сообщения в этом чате!'
+            else:
+                context['status'] = '404'
+                context['msg'] = 'Чат не найден!'
+        else:
+            context['status'] = 'non-profile'
+            context['msg'] = 'Сообщения могут отправлять только пользователи с профилем!'
+    else:
+        context['status'] = 'unauthenticated'
+        context['msg'] = 'Сообщения могут отправлять только зарегестрированные пользователи!'
+
+    return JsonResponse(context)
 
